@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.model;
 
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Entity
@@ -26,7 +24,7 @@ public class User implements UserDetails {
     private String lastName;
     private int age;
     @NotNull
-    @Column(unique = true)
+    //@Column(unique = true)
     private String email;
 
     private String password;
@@ -34,7 +32,8 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
+    )
     private Set<Role> roles = new HashSet<>();
 
     public User() {
@@ -128,7 +127,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       // return getRole().stream().map(a -> new SimpleGrantedAuthority(a.getAuthority())).collect(Collectors.toList());
+//        return getRole().stream().map(a -> new SimpleGrantedAuthority(a.getAuthority())).collect(Collectors.toList());
         return getRole();
     }
 
@@ -167,7 +166,7 @@ public class User implements UserDetails {
 
     public String roleNormalName() {
         String roleName = "";
-        for(Role role:roles){
+        for (Role role : roles) {
             roleName = roleName + " " + role.roleNormalName();
         }
         return roleName;

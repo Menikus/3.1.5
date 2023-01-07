@@ -5,12 +5,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -25,7 +25,6 @@ public class RESTController {
         this.userService = userService;
         this.roleService = roleService;
     }
-
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -58,18 +57,18 @@ public class RESTController {
         return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }
 
-
-    @PutMapping("")
-    public ResponseEntity<User> updateUser(@RequestBody @Valid User user, UriComponentsBuilder builder) {
-        HttpHeaders headers = new HttpHeaders();
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        this.userService.save(user);
-        return new ResponseEntity<>(user, headers, HttpStatus.OK);
-
+    @PatchMapping("{id}")
+    public ResponseEntity<HttpStatus> userSaveEdit(@RequestBody User user, @PathVariable("id") Integer id) {
+        user.setId(id);
+        this.userService.update(user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<User> showAuthUser(Principal principal) {
+        User user = userService.findByName(principal.getName());
+        return new ResponseEntity<> (user, HttpStatus.OK);
+    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") Integer id) {
@@ -80,37 +79,4 @@ public class RESTController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-//    @GetMapping()
-//    public String index(Principal principal, Model model, @ModelAttribute("newUser") User user) {
-//        model.addAttribute("userAuthorized", userService.findByName((principal.getName())))
-//                .addAttribute("users", userService.findAll())
-//                .addAttribute("roles", roleService.findAll());
-//        return "admin";
-//    }
-//
-//    @PostMapping()
-//    public String addCreateNewUser(@ModelAttribute("user") User user) {
-//        userService.save(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public String updateUser(@ModelAttribute("user") User user) {
-//        userService.update(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public String deleteUser(@PathVariable("id") int id) {
-//        userService.delete(id);
-//        return "redirect:/admin";
-//    }
-//
-//    @GetMapping("/{id}")
-//    public String show(@PathVariable("id") int id, Model model) {
-//        model.addAttribute("user", userService.findById(id));
-//        return "redirect:/admin";
-//    }
 }

@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(User user) {
         user.setPassword((new BCryptPasswordEncoder().encode(user.getPassword())));
-        user.setRole(roleServiceImpl.findById(2));
+       // user.setRole(roleServiceImpl.findById(2));
         userRepository.save(user);
     }
 
