@@ -10,7 +10,7 @@ async function getUser() {
 
 function getInformationAboutUser(user) {
     let tr = document.createElement("tr");
-    tr.data =
+    tr.innerHTML =
         `<tr>
     <td>${user.id}</td>
     <td>${user.firstName}</td>
@@ -21,5 +21,6 @@ function getInformationAboutUser(user) {
 </tr>`
     document.getElementById(`userInfo`).append(tr);
 }
+
 getUser();
 

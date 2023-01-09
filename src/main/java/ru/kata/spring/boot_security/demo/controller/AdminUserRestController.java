@@ -10,18 +10,17 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users/")
-public class RESTController {
+public class AdminUserRestController {
 
     final UserService userService;
     final RoleService roleService;
 
     @Autowired
-    public RESTController(UserService userService, RoleService roleService) {
+    public AdminUserRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -30,44 +29,37 @@ public class RESTController {
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = this.userService.findAll();
         if (users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+       return ResponseEntity.ok(users);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
         if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
         User user = this.userService.findById(id);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
-        HttpHeaders headers = new HttpHeaders();
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
         this.userService.save(user);
-        return new ResponseEntity<>(user, headers, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @PatchMapping("{id}")
     public ResponseEntity<HttpStatus> userSaveEdit(@RequestBody User user, @PathVariable("id") Integer id) {
         user.setId(id);
         this.userService.update(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/user")
-    public ResponseEntity<User> showAuthUser(Principal principal) {
-        User user = userService.findByName(principal.getName());
-        return new ResponseEntity<> (user, HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{id}")
@@ -75,8 +67,8 @@ public class RESTController {
         User user = this.userService.findById(id);
         this.userService.delete(id);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 }
