@@ -25,7 +25,7 @@ public class AdminUserRestController {
         this.roleService = roleService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = this.userService.findAll();
         if (users.isEmpty()) {
@@ -46,7 +46,7 @@ public class AdminUserRestController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
         if (user == null) {
             return ResponseEntity.badRequest().build();
