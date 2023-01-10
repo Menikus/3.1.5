@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -13,12 +15,14 @@ import java.util.Set;
 @Component
 public class Gen {
 
+    final PasswordEncoder passwordEncoder;
     private final UserServiceImpl userServiceImpl;
     private final RoleService roleService;
 
-    public Gen(UserServiceImpl userServiceImpl, RoleService roleService) {
+    public Gen(UserServiceImpl userServiceImpl, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userServiceImpl = userServiceImpl;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -40,12 +44,13 @@ public class Gen {
                 "admin", 25,
                 "admin@mail.ru", adminSet);
         admin.setId(1);
-        admin.setPassword("100");
+       // admin.setPassword("");
+        admin.setPassword((passwordEncoder.encode("100")));
 
         User user = new User("user", "user", 22,
                 "user@mail.ru", userSet);
         user.setId(2);
-        user.setPassword("100");
+        user.setPassword((passwordEncoder.encode("100")));
         userServiceImpl.save(admin);
         userServiceImpl.save(user);
     }

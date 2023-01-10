@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -16,41 +17,32 @@ import java.util.List;
 @RequestMapping("/api/users/")
 public class AdminUserRestController {
 
+    final PasswordEncoder passwordEncoder;
     final UserService userService;
     final RoleService roleService;
 
     @Autowired
-    public AdminUserRestController(UserService userService, RoleService roleService) {
+    public AdminUserRestController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = this.userService.findAll();
-        if (users.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-       return ResponseEntity.ok(users);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().build();
-        }
         User user = this.userService.findById(id);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(user);
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
-        if (user == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        user.setPassword((passwordEncoder.encode(user.getPassword())));
         this.userService.save(user);
         return ResponseEntity.ok(user);
     }
@@ -66,9 +58,6 @@ public class AdminUserRestController {
     public ResponseEntity<User> deleteUser(@PathVariable("id") Integer id) {
         User user = this.userService.findById(id);
         this.userService.delete(id);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok().build();
     }
 }

@@ -18,9 +18,7 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService userService;
-
     private final RoleService roleService;
-
 
     @Autowired
     public UserController(UserService userService, RoleService roleService) {
