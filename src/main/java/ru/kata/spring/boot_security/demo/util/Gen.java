@@ -39,18 +39,16 @@ public class Gen {
         adminSet.add(roleUser);
         userSet.add(roleUser);
 
-
         User admin = new User("admin",
                 "admin", 25,
                 "admin@mail.ru", adminSet);
         admin.setId(1);
-       // admin.setPassword("");
-        admin.setPassword((passwordEncoder.encode("100")));
+        admin.setPassword("100");
 
         User user = new User("user", "user", 22,
                 "user@mail.ru", userSet);
         user.setId(2);
-        user.setPassword((passwordEncoder.encode("100")));
+        user.setPassword("100");
         userServiceImpl.save(admin);
         userServiceImpl.save(user);
     }

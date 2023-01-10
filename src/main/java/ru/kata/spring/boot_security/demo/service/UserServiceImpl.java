@@ -16,13 +16,16 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    final RoleServiceImpl roleServiceImpl;
+
+    final private PasswordEncoder passwordEncoder;
+    final private RoleServiceImpl roleServiceImpl;
     final private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleServiceImpl) {
+    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleServiceImpl, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleServiceImpl = roleServiceImpl;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -46,28 +49,20 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void save(User user) {
+
+        user.setPassword((passwordEncoder.encode(user.getPassword())));
         userRepository.save(user);
     }
 
     @Transactional
     public void update(User updUser) {
+        updUser.setPassword((passwordEncoder.encode(updUser.getPassword())));
         userRepository.save(updUser);
     }
-
 
     @Transactional
     public void delete(int id) {
         userRepository.deleteById(id);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User '%s' не найден!", email));
-        }
-        User nUser = new User(user.getEmail(), user.getPassword(), user.getRole());
-        return nUser;
-
-    }
 }

@@ -17,15 +17,13 @@ import java.util.List;
 @RequestMapping("/api/users/")
 public class AdminUserRestController {
 
-    final PasswordEncoder passwordEncoder;
     final UserService userService;
     final RoleService roleService;
 
     @Autowired
-    public AdminUserRestController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public AdminUserRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -42,7 +40,7 @@ public class AdminUserRestController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
-        user.setPassword((passwordEncoder.encode(user.getPassword())));
+
         this.userService.save(user);
         return ResponseEntity.ok(user);
     }

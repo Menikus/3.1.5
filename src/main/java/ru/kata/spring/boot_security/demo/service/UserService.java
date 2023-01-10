@@ -4,7 +4,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
 
-public interface UserService extends org.springframework.security.core.userdetails.UserDetailsService {
+public interface UserService {
 
 
     public List<User> findAll();
