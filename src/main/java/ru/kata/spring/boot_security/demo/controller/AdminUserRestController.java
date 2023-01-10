@@ -26,7 +26,7 @@ public class AdminUserRestController {
         this.roleService = roleService;
     }
 
-    @GetMapping
+        @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = this.userService.findAll();
         return ResponseEntity.ok(users);

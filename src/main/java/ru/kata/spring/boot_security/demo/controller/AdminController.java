@@ -19,7 +19,6 @@ public class AdminController {
     private final UserServiceImpl userServiceImpl;
     private final RoleServiceImpl roleServiceImpl;
 
-
     @Autowired
     public AdminController(UserServiceImpl userServiceImpl, RoleServiceImpl roleServiceImpl) {
         this.userServiceImpl = userServiceImpl;

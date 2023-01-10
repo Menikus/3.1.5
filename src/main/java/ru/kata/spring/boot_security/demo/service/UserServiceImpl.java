@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+
     @Transactional(readOnly = true)
     public User findById(int id) {
         Optional<User> user = userRepository.findById(id);

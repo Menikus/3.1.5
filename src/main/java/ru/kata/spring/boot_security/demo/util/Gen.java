@@ -25,6 +25,7 @@ public class Gen {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     @PostConstruct
     public void initDB() {
         Role roleAdmin = new Role(1, "ROLE_ADMIN");
