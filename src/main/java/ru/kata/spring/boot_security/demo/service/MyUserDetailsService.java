@@ -24,7 +24,6 @@ public class MyUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' не найден!", email));
         }
-        User nUser = new User(user.getEmail(), user.getPassword(), user.getRole());
-        return nUser;
+        return user;
     }
 }
