@@ -11,7 +11,7 @@ public interface UserService {
     public User findById(int id);
 
 
-    public User findByName(String name);
+    public User findByEmail(String email);
 
 
     public void save(User user);

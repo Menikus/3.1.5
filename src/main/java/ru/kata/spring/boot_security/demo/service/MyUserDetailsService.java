@@ -12,7 +12,6 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 public class MyUserDetailsService implements UserDetailsService {
 
     final UserRepository userRepository;
-
     @Autowired
     public MyUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -22,7 +21,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User '%s' не найден!", email));
+            throw new UsernameNotFoundException(String.format("User с емейлом '%s' не найден!", email));
         }
         return user;
     }

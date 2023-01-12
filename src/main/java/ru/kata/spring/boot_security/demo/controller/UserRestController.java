@@ -25,7 +25,7 @@ public class UserRestController {
 
     @GetMapping("/user")
     public ResponseEntity<User> showAuthUser(Principal principal) {
-        User user = userService.findByName(principal.getName());
+        User user = userService.findByEmail(principal.getName());
         return ResponseEntity.ok(user);
     }
 }

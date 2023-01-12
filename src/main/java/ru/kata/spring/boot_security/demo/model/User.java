@@ -136,7 +136,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
        return getRole().stream().map(a -> new SimpleGrantedAuthority(a.getAuthority())).collect(Collectors.toList());
-//        return getRole();
     }
 
     @Override

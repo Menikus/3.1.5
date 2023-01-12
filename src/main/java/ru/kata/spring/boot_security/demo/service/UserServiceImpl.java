@@ -16,13 +16,13 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     final private PasswordEncoder passwordEncoder;
-    final private RoleServiceImpl roleServiceImpl;
+    final private RoleService roleService;
     final private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleServiceImpl, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleServiceImpl = roleServiceImpl;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-
     @Transactional(readOnly = true)
     public User findById(int id) {
         Optional<User> user = userRepository.findById(id);
@@ -39,11 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findByName(String name) {
-        Optional<User> user = userRepository.findAll().stream()
-                .filter(u -> Objects.equals(u.getUsername(), name))
-                .findFirst();
-        return user.orElse(null);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Transactional

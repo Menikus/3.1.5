@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>{
+public interface UserRepository extends JpaRepository<User, Integer> {
+
     @Query("select u from User u join fetch u.roles where u.email = (:email)")
     User findByEmail(@Param("email") String email);
-
 
 }
