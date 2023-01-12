@@ -1,10 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -26,7 +24,7 @@ public class AdminUserRestController {
         this.roleService = roleService;
     }
 
-        @GetMapping
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = this.userService.findAll();
         return ResponseEntity.ok(users);

@@ -10,15 +10,11 @@ public interface UserService {
 
     public User findById(int id);
 
-
     public User findByEmail(String email);
-
 
     public void save(User user);
 
-
     public void update(User updUser);
-
 
     public void delete(int id);
 }

@@ -18,13 +18,12 @@ public class Gen {
     final PasswordEncoder passwordEncoder;
     private final UserServiceImpl userServiceImpl;
     private final RoleService roleService;
-
+    @Autowired
     public Gen(UserServiceImpl userServiceImpl, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userServiceImpl = userServiceImpl;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @PostConstruct
     public void initDB() {
