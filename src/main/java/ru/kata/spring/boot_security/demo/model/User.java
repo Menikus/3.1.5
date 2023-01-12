@@ -170,12 +170,4 @@ public class User implements UserDetails {
                 ", roles=" + roles.toString() +
                 '}';
     }
-
-    public String roleNormalName() {
-        String roleName = "";
-        for (Role role : roles) {
-            roleName = roleName + " " + role.roleNormalName();
-        }
-        return roleName;
-    }
 }

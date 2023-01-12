@@ -40,7 +40,6 @@ public class AdminUserRestController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
-
         this.userService.save(user);
         return ResponseEntity.ok(user);
     }
@@ -54,7 +53,6 @@ public class AdminUserRestController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") Integer id) {
-        User user = this.userService.findById(id);
         this.userService.delete(id);
         return ResponseEntity.ok().build();
     }
